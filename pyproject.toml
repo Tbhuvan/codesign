@@ -1,0 +1,130 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "codesign"
+version = "0.2.0"
+description = "Neuro-symbolic mechanistic interpretability and problem-space adversarial attacks for code vulnerability detection"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [{ name = "Bhuvan Chandra Thuluva", email = "bhuvan@example.com" }]
+keywords = [
+    "adversarial-machine-learning",
+    "mechanistic-interpretability",
+    "software-vulnerability-detection",
+    "program-analysis",
+    "transformer-lens",
+    "tree-sitter",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Security",
+]
+dependencies = [
+    "tree-sitter>=0.22.0",
+    "tree-sitter-python>=0.21.0",
+    "transformers>=4.40.0",
+    "torch>=2.1.0",
+    "transformer-lens>=2.0.0",
+    "jaxtyping>=0.2.25",
+    "einops>=0.7.0",
+    "numpy>=1.24.0",
+    "scikit-learn>=1.3.0",
+    "matplotlib>=3.7.0",
+    "rich>=13.0.0",
+    "tqdm>=4.65.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "pytest-xdist>=3.3.0",
+    "ruff>=0.4.0",
+    "mypy>=1.8.0",
+    "pre-commit>=3.6.0",
+]
+notebook = [
+    "jupyter>=1.0.0",
+    "ipykernel>=6.25.0",
+    "seaborn>=0.13.0",
+    "pandas>=2.0.0",
+]
+c-lang = [
+    "tree-sitter-c>=0.21.0",
+]
+
+[project.scripts]
+codesign = "codesign.cli:main"
+
+[project.urls]
+Repository = "https://github.com/Tbhuvan/codesign"
+Issues = "https://github.com/Tbhuvan/codesign/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+codesign = ["py.typed"]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+testpaths = ["tests"]
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--strict-config",
+    "--showlocals",
+]
+markers = [
+    "slow: marks tests requiring large model downloads or GPU",
+    "integration: marks tests requiring network access",
+    "unit: pure unit tests",
+]
+filterwarnings = [
+    "ignore::DeprecationWarning:torch.*",
+    "ignore::DeprecationWarning:transformers.*",
+]
+
+[tool.coverage.run]
+source = ["src/codesign"]
+branch = true
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:",
+    "if __name__ == .__main__.:",
+]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 110
+extend-exclude = ["notebooks/*.ipynb"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "C4", "SIM", "RUF"]
+ignore = ["E501", "N812"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["B", "N"]
+"experiments/*" = ["E402"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = false
+warn_unused_configs = true
+ignore_missing_imports = true
+disallow_untyped_defs = false
+check_untyped_defs = true
+strict_optional = true
