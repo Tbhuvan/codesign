@@ -1,0 +1,7 @@
+{
+  "id": "cwe-22-path-traversal",
+  "cwe": "CWE-22",
+  "vulnerable": true,
+  "description": "Path traversal: filename concatenated to base_dir without normalization or containment check.",
+  "tags": ["path-traversal", "io"]
+}

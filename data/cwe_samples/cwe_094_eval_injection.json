@@ -1,0 +1,7 @@
+{
+  "id": "cwe-94-eval-injection",
+  "cwe": "CWE-94",
+  "vulnerable": true,
+  "description": "Code injection via eval() of unsanitized user expression.",
+  "tags": ["injection", "eval"]
+}

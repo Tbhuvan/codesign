@@ -1,0 +1,7 @@
+{
+  "id": "cwe-611-xxe",
+  "cwe": "CWE-611",
+  "vulnerable": true,
+  "description": "Improper restriction of XML external entities (XXE) via xml.etree.ElementTree.fromstring on untrusted input.",
+  "tags": ["xml", "xxe"]
+}

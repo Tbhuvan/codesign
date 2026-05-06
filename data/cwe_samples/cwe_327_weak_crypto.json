@@ -1,0 +1,7 @@
+{
+  "id": "cwe-327-weak-crypto",
+  "cwe": "CWE-327",
+  "vulnerable": true,
+  "description": "Use of broken cryptographic primitive (MD5) for password hashing.",
+  "tags": ["crypto", "hashing"]
+}

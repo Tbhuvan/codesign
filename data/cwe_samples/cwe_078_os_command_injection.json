@@ -1,0 +1,7 @@
+{
+  "id": "cwe-78-os-command-injection",
+  "cwe": "CWE-78",
+  "vulnerable": true,
+  "description": "OS command injection via concatenated user input passed to os.system.",
+  "tags": ["injection", "subprocess", "os.system"]
+}

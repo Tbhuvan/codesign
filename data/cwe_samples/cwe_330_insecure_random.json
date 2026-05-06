@@ -1,0 +1,7 @@
+{
+  "id": "cwe-330-insecure-random",
+  "cwe": "CWE-330",
+  "vulnerable": true,
+  "description": "Use of insufficiently random values: random.randint is not cryptographically secure for token generation.",
+  "tags": ["crypto", "rng"]
+}

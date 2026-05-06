@@ -1,0 +1,7 @@
+{
+  "id": "cwe-89-sql-injection",
+  "cwe": "CWE-89",
+  "vulnerable": true,
+  "description": "SQL injection via string concatenation in cursor.execute call.",
+  "tags": ["injection", "sql", "sqlite3"]
+}

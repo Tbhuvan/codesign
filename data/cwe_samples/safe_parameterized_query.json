@@ -1,0 +1,7 @@
+{
+  "id": "safe-parameterized-query",
+  "cwe": "NONE",
+  "vulnerable": false,
+  "description": "Negative control: parameterized SQL query, structurally similar to cwe-89 sample but safe.",
+  "tags": ["sql", "control-sample"]
+}

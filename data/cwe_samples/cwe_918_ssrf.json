@@ -1,0 +1,7 @@
+{
+  "id": "cwe-918-ssrf",
+  "cwe": "CWE-918",
+  "vulnerable": true,
+  "description": "Server-side request forgery: user-controlled URL passed to urllib.request.urlopen without allow-listing.",
+  "tags": ["ssrf", "http"]
+}

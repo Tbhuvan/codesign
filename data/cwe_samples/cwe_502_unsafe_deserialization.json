@@ -1,0 +1,7 @@
+{
+  "id": "cwe-502-unsafe-deserialization",
+  "cwe": "CWE-502",
+  "vulnerable": true,
+  "description": "Unsafe deserialization: pickle.loads on attacker-controlled data enables arbitrary code execution.",
+  "tags": ["deserialization", "pickle"]
+}
