@@ -1,0 +1,441 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-07T12:32:48Z",
+  "probe_path": "data/calibration_probe.json",
+  "threshold": 0.5,
+  "reports": [
+    {
+      "target": "ollama:qwen3:8b",
+      "info": {
+        "kind": "ollama",
+        "model": "qwen3:8b",
+        "base_url": "http://localhost:11434",
+        "n_shots": 0
+      },
+      "n_total": 20,
+      "n_vuln": 10,
+      "n_safe": 10,
+      "tp": 9,
+      "fp": 3,
+      "tn": 7,
+      "fn": 1,
+      "accuracy": 0.8,
+      "recall": 0.9,
+      "precision": 0.75,
+      "specificity": 0.7,
+      "f1": 0.8182,
+      "threshold": 0.5,
+      "items": [
+        {
+          "id": "vuln_os_command_injection",
+          "true_label": "vuln",
+          "score": 0.95,
+          "predicted_vuln": true
+        },
+        {
+          "id": "vuln_eval_injection",
+          "true_label": "vuln",
+          "score": 0.95,
+          "predicted_vuln": true
+        },
+        {
+          "id": "vuln_pickle_deserialization",
+          "true_label": "vuln",
+          "score": 0.95,
+          "predicted_vuln": true
+        },
+        {
+          "id": "vuln_sql_injection",
+          "true_label": "vuln",
+          "score": 0.95,
+          "predicted_vuln": true
+        },
+        {
+          "id": "vuln_path_traversal",
+          "true_label": "vuln",
+          "score": 0.95,
+          "predicted_vuln": true
+        },
+        {
+          "id": "vuln_yaml_load",
+          "true_label": "vuln",
+          "score": 0.95,
+          "predicted_vuln": true
+        },
+        {
+          "id": "vuln_subprocess_shell",
+          "true_label": "vuln",
+          "score": 0.95,
+          "predicted_vuln": true
+        },
+        {
+          "id": "vuln_hardcoded_secret",
+          "true_label": "vuln",
+          "score": 0.05,
+          "predicted_vuln": false
+        },
+        {
+          "id": "vuln_md5_password",
+          "true_label": "vuln",
+          "score": 0.95,
+          "predicted_vuln": true
+        },
+        {
+          "id": "vuln_xxe",
+          "true_label": "vuln",
+          "score": 0.95,
+          "predicted_vuln": true
+        },
+        {
+          "id": "safe_simple_arithmetic",
+          "true_label": "safe",
+          "score": 0.05,
+          "predicted_vuln": false
+        },
+        {
+          "id": "safe_class_with_init",
+          "true_label": "safe",
+          "score": 0.05,
+          "predicted_vuln": false
+        },
+        {
+          "id": "safe_parameterized_sql",
+          "true_label": "safe",
+          "score": 0.05,
+          "predicted_vuln": false
+        },
+        {
+          "id": "safe_subprocess_no_shell",
+          "true_label": "safe",
+          "score": 0.05,
+          "predicted_vuln": false
+        },
+        {
+          "id": "safe_path_canonicalised",
+          "true_label": "safe",
+          "score": 0.95,
+          "predicted_vuln": true
+        },
+        {
+          "id": "safe_bcrypt_password",
+          "true_label": "safe",
+          "score": 0.05,
+          "predicted_vuln": false
+        },
+        {
+          "id": "safe_yaml_safe_load",
+          "true_label": "safe",
+          "score": 0.05,
+          "predicted_vuln": false
+        },
+        {
+          "id": "safe_env_secret",
+          "true_label": "safe",
+          "score": 0.95,
+          "predicted_vuln": true
+        },
+        {
+          "id": "safe_xml_defused",
+          "true_label": "safe",
+          "score": 0.05,
+          "predicted_vuln": false
+        },
+        {
+          "id": "safe_recursive_fib",
+          "true_label": "safe",
+          "score": 0.95,
+          "predicted_vuln": true
+        }
+      ]
+    },
+    {
+      "target": "ollama:qwen2.5:3b",
+      "info": {
+        "kind": "ollama",
+        "model": "qwen2.5:3b",
+        "base_url": "http://localhost:11434",
+        "n_shots": 0
+      },
+      "n_total": 20,
+      "n_vuln": 10,
+      "n_safe": 10,
+      "tp": 10,
+      "fp": 7,
+      "tn": 3,
+      "fn": 0,
+      "accuracy": 0.65,
+      "recall": 1.0,
+      "precision": 0.5882,
+      "specificity": 0.3,
+      "f1": 0.7407,
+      "threshold": 0.5,
+      "items": [
+        {
+          "id": "vuln_os_command_injection",
+          "true_label": "vuln",
+          "score": 0.95,
+          "predicted_vuln": true
+        },
+        {
+          "id": "vuln_eval_injection",
+          "true_label": "vuln",
+          "score": 0.95,
+          "predicted_vuln": true
+        },
+        {
+          "id": "vuln_pickle_deserialization",
+          "true_label": "vuln",
+          "score": 0.95,
+          "predicted_vuln": true
+        },
+        {
+          "id": "vuln_sql_injection",
+          "true_label": "vuln",
+          "score": 0.95,
+          "predicted_vuln": true
+        },
+        {
+          "id": "vuln_path_traversal",
+          "true_label": "vuln",
+          "score": 0.95,
+          "predicted_vuln": true
+        },
+        {
+          "id": "vuln_yaml_load",
+          "true_label": "vuln",
+          "score": 0.95,
+          "predicted_vuln": true
+        },
+        {
+          "id": "vuln_subprocess_shell",
+          "true_label": "vuln",
+          "score": 0.95,
+          "predicted_vuln": true
+        },
+        {
+          "id": "vuln_hardcoded_secret",
+          "true_label": "vuln",
+          "score": 0.95,
+          "predicted_vuln": true
+        },
+        {
+          "id": "vuln_md5_password",
+          "true_label": "vuln",
+          "score": 0.95,
+          "predicted_vuln": true
+        },
+        {
+          "id": "vuln_xxe",
+          "true_label": "vuln",
+          "score": 0.95,
+          "predicted_vuln": true
+        },
+        {
+          "id": "safe_simple_arithmetic",
+          "true_label": "safe",
+          "score": 0.05,
+          "predicted_vuln": false
+        },
+        {
+          "id": "safe_class_with_init",
+          "true_label": "safe",
+          "score": 0.05,
+          "predicted_vuln": false
+        },
+        {
+          "id": "safe_parameterized_sql",
+          "true_label": "safe",
+          "score": 0.95,
+          "predicted_vuln": true
+        },
+        {
+          "id": "safe_subprocess_no_shell",
+          "true_label": "safe",
+          "score": 0.95,
+          "predicted_vuln": true
+        },
+        {
+          "id": "safe_path_canonicalised",
+          "true_label": "safe",
+          "score": 0.95,
+          "predicted_vuln": true
+        },
+        {
+          "id": "safe_bcrypt_password",
+          "true_label": "safe",
+          "score": 0.95,
+          "predicted_vuln": true
+        },
+        {
+          "id": "safe_yaml_safe_load",
+          "true_label": "safe",
+          "score": 0.95,
+          "predicted_vuln": true
+        },
+        {
+          "id": "safe_env_secret",
+          "true_label": "safe",
+          "score": 0.95,
+          "predicted_vuln": true
+        },
+        {
+          "id": "safe_xml_defused",
+          "true_label": "safe",
+          "score": 0.05,
+          "predicted_vuln": false
+        },
+        {
+          "id": "safe_recursive_fib",
+          "true_label": "safe",
+          "score": 0.95,
+          "predicted_vuln": true
+        }
+      ]
+    },
+    {
+      "target": "hf:mrm8488/codebert-base-finetuned-detect-insecure-code",
+      "info": {
+        "kind": "hf",
+        "model_id": "mrm8488/codebert-base-finetuned-detect-insecure-code",
+        "max_chars": 512,
+        "positive_label": null,
+        "invert": false
+      },
+      "n_total": 20,
+      "n_vuln": 10,
+      "n_safe": 10,
+      "tp": 10,
+      "fp": 10,
+      "tn": 0,
+      "fn": 0,
+      "accuracy": 0.5,
+      "recall": 1.0,
+      "precision": 0.5,
+      "specificity": 0.0,
+      "f1": 0.6667,
+      "threshold": 0.5,
+      "items": [
+        {
+          "id": "vuln_os_command_injection",
+          "true_label": "vuln",
+          "score": 0.9975536465644836,
+          "predicted_vuln": true
+        },
+        {
+          "id": "vuln_eval_injection",
+          "true_label": "vuln",
+          "score": 0.9847663640975952,
+          "predicted_vuln": true
+        },
+        {
+          "id": "vuln_pickle_deserialization",
+          "true_label": "vuln",
+          "score": 0.9965832829475403,
+          "predicted_vuln": true
+        },
+        {
+          "id": "vuln_sql_injection",
+          "true_label": "vuln",
+          "score": 0.9991863369941711,
+          "predicted_vuln": true
+        },
+        {
+          "id": "vuln_path_traversal",
+          "true_label": "vuln",
+          "score": 0.9971476197242737,
+          "predicted_vuln": true
+        },
+        {
+          "id": "vuln_yaml_load",
+          "true_label": "vuln",
+          "score": 0.9910325407981873,
+          "predicted_vuln": true
+        },
+        {
+          "id": "vuln_subprocess_shell",
+          "true_label": "vuln",
+          "score": 0.9987118244171143,
+          "predicted_vuln": true
+        },
+        {
+          "id": "vuln_hardcoded_secret",
+          "true_label": "vuln",
+          "score": 0.99097740650177,
+          "predicted_vuln": true
+        },
+        {
+          "id": "vuln_md5_password",
+          "true_label": "vuln",
+          "score": 0.9944427609443665,
+          "predicted_vuln": true
+        },
+        {
+          "id": "vuln_xxe",
+          "true_label": "vuln",
+          "score": 0.996738612651825,
+          "predicted_vuln": true
+        },
+        {
+          "id": "safe_simple_arithmetic",
+          "true_label": "safe",
+          "score": 0.9985520243644714,
+          "predicted_vuln": true
+        },
+        {
+          "id": "safe_class_with_init",
+          "true_label": "safe",
+          "score": 0.9981319308280945,
+          "predicted_vuln": true
+        },
+        {
+          "id": "safe_parameterized_sql",
+          "true_label": "safe",
+          "score": 0.9991831183433533,
+          "predicted_vuln": true
+        },
+        {
+          "id": "safe_subprocess_no_shell",
+          "true_label": "safe",
+          "score": 0.9964996576309204,
+          "predicted_vuln": true
+        },
+        {
+          "id": "safe_path_canonicalised",
+          "true_label": "safe",
+          "score": 0.9991687536239624,
+          "predicted_vuln": true
+        },
+        {
+          "id": "safe_bcrypt_password",
+          "true_label": "safe",
+          "score": 0.9929795861244202,
+          "predicted_vuln": true
+        },
+        {
+          "id": "safe_yaml_safe_load",
+          "true_label": "safe",
+          "score": 0.9973664879798889,
+          "predicted_vuln": true
+        },
+        {
+          "id": "safe_env_secret",
+          "true_label": "safe",
+          "score": 0.9961829781532288,
+          "predicted_vuln": true
+        },
+        {
+          "id": "safe_xml_defused",
+          "true_label": "safe",
+          "score": 0.9908361434936523,
+          "predicted_vuln": true
+        },
+        {
+          "id": "safe_recursive_fib",
+          "true_label": "safe",
+          "score": 0.9802384376525879,
+          "predicted_vuln": true
+        }
+      ]
+    }
+  ]
+}

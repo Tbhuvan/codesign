@@ -23,7 +23,6 @@ ENV/
 *.swo
 .DS_Store
 
-
 # Test / coverage
 .pytest_cache/
 .mypy_cache/

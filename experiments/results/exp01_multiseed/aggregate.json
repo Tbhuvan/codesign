@@ -1,0 +1,174 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-05-07T16:45:21Z",
+  "target_model": "ollama:qwen3:8b",
+  "dataset": "data/cwe_samples",
+  "max_steps": 25,
+  "epsilon": 0.3,
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "aggregate": {
+    "evasion_rate": {
+      "mean": 0.6,
+      "std": 0.06236095644623234,
+      "n": 5
+    },
+    "evasion_rate_vuln": {
+      "mean": 0.5636363636363636,
+      "std": 0.06803013430498075,
+      "n": 5
+    },
+    "mean_confidence_drop": {
+      "mean": 0.465,
+      "std": 0.05612486080160913,
+      "n": 5
+    },
+    "parse_validity_rate": {
+      "mean": 1.0,
+      "std": 0.0,
+      "n": 5
+    },
+    "dfg_preservation_rate": {
+      "mean": 0.7833333333333334,
+      "std": 0.1452966314513558,
+      "n": 5
+    },
+    "mean_steps_to_evade": {
+      "mean": 25.0,
+      "std": 0.0,
+      "n": 5
+    },
+    "n_seeds": 5
+  },
+  "per_seed": [
+    {
+      "seed": 0,
+      "summary": {
+        "n_samples": 12,
+        "n_vulnerable": 11,
+        "n_correctly_flagged": 11,
+        "evasion_rate": 0.5833333333333334,
+        "evasion_rate_vuln": 0.5454545454545454,
+        "mean_confidence_drop": 0.45,
+        "mean_steps_to_evade": 25.0,
+        "parse_validity_rate": 1.0,
+        "dfg_preservation_rate": 0.8333333333333334,
+        "mutation_diversity": {
+          "variable_renaming": 159,
+          "docstring_insertion": 8,
+          "control_flow_flattening": 26,
+          "dead_code_insertion": 70,
+          "equivalent_expression_substitution": 17,
+          "natural_identifier_renaming": 15,
+          "type_annotations_added": 2,
+          "inline_comment_insertion": 3
+        }
+      },
+      "result_path": "experiments\\results\\exp01_multiseed\\seed_0.json"
+    },
+    {
+      "seed": 1,
+      "summary": {
+        "n_samples": 12,
+        "n_vulnerable": 11,
+        "n_correctly_flagged": 11,
+        "evasion_rate": 0.5833333333333334,
+        "evasion_rate_vuln": 0.5454545454545454,
+        "mean_confidence_drop": 0.45,
+        "mean_steps_to_evade": 25.0,
+        "parse_validity_rate": 1.0,
+        "dfg_preservation_rate": 0.9166666666666666,
+        "mutation_diversity": {
+          "natural_identifier_renaming": 24,
+          "variable_renaming": 159,
+          "dead_code_insertion": 54,
+          "inline_comment_insertion": 12,
+          "control_flow_flattening": 28,
+          "equivalent_expression_substitution": 11,
+          "docstring_insertion": 9,
+          "type_annotations_added": 3
+        }
+      },
+      "result_path": "experiments\\results\\exp01_multiseed\\seed_1.json"
+    },
+    {
+      "seed": 2,
+      "summary": {
+        "n_samples": 12,
+        "n_vulnerable": 11,
+        "n_correctly_flagged": 11,
+        "evasion_rate": 0.5,
+        "evasion_rate_vuln": 0.45454545454545453,
+        "mean_confidence_drop": 0.375,
+        "mean_steps_to_evade": 25.0,
+        "parse_validity_rate": 1.0,
+        "dfg_preservation_rate": 0.8333333333333334,
+        "mutation_diversity": {
+          "variable_renaming": 147,
+          "type_annotations_added": 7,
+          "natural_identifier_renaming": 10,
+          "equivalent_expression_substitution": 26,
+          "control_flow_flattening": 7,
+          "docstring_insertion": 18,
+          "dead_code_insertion": 80,
+          "inline_comment_insertion": 5
+        }
+      },
+      "result_path": "experiments\\results\\exp01_multiseed\\seed_2.json"
+    },
+    {
+      "seed": 3,
+      "summary": {
+        "n_samples": 12,
+        "n_vulnerable": 11,
+        "n_correctly_flagged": 11,
+        "evasion_rate": 0.6666666666666666,
+        "evasion_rate_vuln": 0.6363636363636364,
+        "mean_confidence_drop": 0.525,
+        "mean_steps_to_evade": 25.0,
+        "parse_validity_rate": 1.0,
+        "dfg_preservation_rate": 0.5,
+        "mutation_diversity": {
+          "dead_code_insertion": 133,
+          "control_flow_flattening": 8,
+          "type_annotations_added": 17,
+          "variable_renaming": 120,
+          "inline_comment_insertion": 16,
+          "natural_identifier_renaming": 5,
+          "docstring_insertion": 1
+        }
+      },
+      "result_path": "experiments\\results\\exp01_multiseed\\seed_3.json"
+    },
+    {
+      "seed": 4,
+      "summary": {
+        "n_samples": 12,
+        "n_vulnerable": 11,
+        "n_correctly_flagged": 11,
+        "evasion_rate": 0.6666666666666666,
+        "evasion_rate_vuln": 0.6363636363636364,
+        "mean_confidence_drop": 0.525,
+        "mean_steps_to_evade": 25.0,
+        "parse_validity_rate": 1.0,
+        "dfg_preservation_rate": 0.8333333333333334,
+        "mutation_diversity": {
+          "natural_identifier_renaming": 17,
+          "variable_renaming": 127,
+          "type_annotations_added": 5,
+          "control_flow_flattening": 29,
+          "docstring_insertion": 27,
+          "dead_code_insertion": 54,
+          "equivalent_expression_substitution": 36,
+          "inline_comment_insertion": 5
+        }
+      },
+      "result_path": "experiments\\results\\exp01_multiseed\\seed_4.json"
+    }
+  ]
+}

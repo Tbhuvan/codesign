@@ -1,0 +1,235 @@
+{
+  "model": "qwen3:8b",
+  "schema_version": "1.0",
+  "generated_at": "2026-05-07T12:55:25Z",
+  "by_shot": {
+    "0": {
+      "n": 4,
+      "evasion_rate": 0.25,
+      "mean_first_evade_step": 6.0
+    },
+    "3": {
+      "n": 4,
+      "evasion_rate": 0.25,
+      "mean_first_evade_step": 3.0
+    }
+  },
+  "results": [
+    {
+      "sample_id": "cwe-22-path-traversal",
+      "cwe": "CWE-22",
+      "model": "qwen3:8b",
+      "n_shots": 0,
+      "base_score": 0.95,
+      "final_score": 0.05,
+      "evaded": true,
+      "first_evade_step": 6,
+      "total_steps": 8,
+      "elapsed_seconds": 41.5,
+      "trace_q_table": {
+        "variable_renaming": 0.0,
+        "dead_code_insertion": 0.8999999999999999,
+        "control_flow_flattening": 0.0
+      },
+      "mutations": [
+        "variable_renaming",
+        "variable_renaming",
+        "variable_renaming",
+        "variable_renaming",
+        "variable_renaming",
+        "variable_renaming",
+        "dead_code_insertion",
+        "control_flow_flattening"
+      ]
+    },
+    {
+      "sample_id": "cwe-22-path-traversal",
+      "cwe": "CWE-22",
+      "model": "qwen3:8b",
+      "n_shots": 3,
+      "base_score": 0.95,
+      "final_score": 0.05,
+      "evaded": true,
+      "first_evade_step": 3,
+      "total_steps": 8,
+      "elapsed_seconds": 40.2,
+      "trace_q_table": {
+        "variable_renaming": -0.020000000000000046,
+        "dead_code_insertion": 0.0,
+        "control_flow_flattening": 0.0
+      },
+      "mutations": [
+        "variable_renaming",
+        "variable_renaming",
+        "variable_renaming",
+        "variable_renaming",
+        "variable_renaming",
+        "dead_code_insertion",
+        "dead_code_insertion",
+        "dead_code_insertion"
+      ]
+    },
+    {
+      "sample_id": "cwe-78-os-command-injection",
+      "cwe": "CWE-78",
+      "model": "qwen3:8b",
+      "n_shots": 0,
+      "base_score": 0.95,
+      "final_score": 0.95,
+      "evaded": false,
+      "first_evade_step": null,
+      "total_steps": 8,
+      "elapsed_seconds": 40.4,
+      "trace_q_table": {
+        "variable_renaming": 0.0,
+        "dead_code_insertion": 0.0,
+        "control_flow_flattening": 0.0
+      },
+      "mutations": [
+        "variable_renaming",
+        "variable_renaming",
+        "variable_renaming",
+        "dead_code_insertion",
+        "variable_renaming",
+        "control_flow_flattening",
+        "variable_renaming",
+        "variable_renaming"
+      ]
+    },
+    {
+      "sample_id": "cwe-78-os-command-injection",
+      "cwe": "CWE-78",
+      "model": "qwen3:8b",
+      "n_shots": 3,
+      "base_score": 0.95,
+      "final_score": 0.95,
+      "evaded": false,
+      "first_evade_step": null,
+      "total_steps": 8,
+      "elapsed_seconds": 42.0,
+      "trace_q_table": {
+        "variable_renaming": 0.0,
+        "dead_code_insertion": 0.0,
+        "control_flow_flattening": 0.0
+      },
+      "mutations": [
+        "variable_renaming",
+        "variable_renaming",
+        "variable_renaming",
+        "dead_code_insertion",
+        "variable_renaming",
+        "control_flow_flattening",
+        "variable_renaming",
+        "variable_renaming"
+      ]
+    },
+    {
+      "sample_id": "cwe-89-sql-injection",
+      "cwe": "CWE-89",
+      "model": "qwen3:8b",
+      "n_shots": 0,
+      "base_score": 0.95,
+      "final_score": 0.95,
+      "evaded": false,
+      "first_evade_step": null,
+      "total_steps": 8,
+      "elapsed_seconds": 42.0,
+      "trace_q_table": {
+        "variable_renaming": 0.0,
+        "dead_code_insertion": 0.0,
+        "control_flow_flattening": 0.0
+      },
+      "mutations": [
+        "variable_renaming",
+        "variable_renaming",
+        "variable_renaming",
+        "variable_renaming",
+        "control_flow_flattening",
+        "variable_renaming",
+        "variable_renaming",
+        "variable_renaming"
+      ]
+    },
+    {
+      "sample_id": "cwe-89-sql-injection",
+      "cwe": "CWE-89",
+      "model": "qwen3:8b",
+      "n_shots": 3,
+      "base_score": 0.95,
+      "final_score": 0.95,
+      "evaded": false,
+      "first_evade_step": null,
+      "total_steps": 8,
+      "elapsed_seconds": 42.7,
+      "trace_q_table": {
+        "variable_renaming": 0.0,
+        "dead_code_insertion": 0.0,
+        "control_flow_flattening": 0.0
+      },
+      "mutations": [
+        "variable_renaming",
+        "variable_renaming",
+        "variable_renaming",
+        "variable_renaming",
+        "control_flow_flattening",
+        "variable_renaming",
+        "variable_renaming",
+        "variable_renaming"
+      ]
+    },
+    {
+      "sample_id": "cwe-94-eval-injection",
+      "cwe": "CWE-94",
+      "model": "qwen3:8b",
+      "n_shots": 0,
+      "base_score": 0.95,
+      "final_score": 0.95,
+      "evaded": false,
+      "first_evade_step": null,
+      "total_steps": 8,
+      "elapsed_seconds": 34.7,
+      "trace_q_table": {
+        "variable_renaming": 0.0,
+        "dead_code_insertion": 0.0,
+        "control_flow_flattening": 0.0
+      },
+      "mutations": [
+        "variable_renaming",
+        "variable_renaming",
+        "variable_renaming",
+        "dead_code_insertion",
+        "variable_renaming",
+        "control_flow_flattening",
+        "variable_renaming",
+        "variable_renaming"
+      ]
+    },
+    {
+      "sample_id": "cwe-94-eval-injection",
+      "cwe": "CWE-94",
+      "model": "qwen3:8b",
+      "n_shots": 3,
+      "base_score": 0.95,
+      "final_score": 0.95,
+      "evaded": false,
+      "first_evade_step": null,
+      "total_steps": 8,
+      "elapsed_seconds": 35.8,
+      "trace_q_table": {
+        "variable_renaming": 0.0,
+        "dead_code_insertion": 0.0,
+        "control_flow_flattening": 0.0
+      },
+      "mutations": [
+        "variable_renaming",
+        "variable_renaming",
+        "variable_renaming",
+        "dead_code_insertion",
+        "variable_renaming",
+        "control_flow_flattening",
+        "variable_renaming",
+        "variable_renaming"
+      ]
+    }
+  ]
+}
