@@ -16,7 +16,7 @@ from codesign.visualizer import plot_head_heatmap
 
 def main() -> int:
     p = argparse.ArgumentParser()
-    p.add_argument("--model", default="EleutherAI/pythia-160m")
+    p.add_argument("--model", default="Qwen/Qwen2.5-Coder-1.5B-Instruct")
     p.add_argument("--device", default="cpu")
     p.add_argument("--dataset", default="data/cwe_samples")
     p.add_argument("--top-k", type=int, default=10)
