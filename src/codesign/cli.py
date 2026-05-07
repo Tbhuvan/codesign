@@ -17,6 +17,7 @@ from codesign import visualizer
 from codesign.attacker import RLAdversary
 from codesign.parser import ProgramGraphExtractor
 
+log = logging.getLogger(__name__)
 console = Console()
 
 
@@ -29,32 +30,41 @@ def _setup_logging(verbose: bool) -> None:
 
 
 class SVDTargetModel:
-    """HuggingFace pipeline wrapped as a `code -> [0,1]` callable."""
+    """Back-compat wrapper around :func:`codesign.targets.make_target`.
 
-    def __init__(self, model_id: str = "mrm8488/codebert-base-finetuned-detect-insecure-code") -> None:
-        self.model_id = model_id
-        self._pipe = None
+    Older entry points (and exp03) construct ``SVDTargetModel(model_id=...)``
+    expecting the HF pipeline behaviour. New code should call
+    ``make_target("ollama:qwen3:8b")`` etc. directly.
+    """
+
+    def __init__(
+        self,
+        model_id: str | None = None,
+        *,
+        spec: str | None = None,
+    ) -> None:
+        from codesign.targets import make_target
+
+        if spec is None:
+            if model_id is None:
+                spec = "ollama:qwen3:8b"
+            elif model_id.startswith(("ollama:", "hf:", "heuristic")):
+                spec = model_id
+            else:
+                spec = f"hf:{model_id}"
+        self._target = make_target(spec)
+        self.model_id = spec
+        self.spec = spec
 
     def _ensure_loaded(self) -> None:
-        if self._pipe is not None:
-            return
+        # Triggered by legacy callers; force a tiny call to lazy-load.
         try:
-            import torch
-            from transformers import pipeline
-        except ImportError as e:
-            raise ImportError("install with `pip install codesign` to get torch+transformers") from e
-        device = 0 if torch.cuda.is_available() else -1
-        self._pipe = pipeline("text-classification", model=self.model_id, device=device)
+            self._target.score("def f(): pass\n")
+        except Exception as e:  # pragma: no cover
+            log.warning("ensure_loaded probe failed: %s", e)
 
     def detect_vulnerability_score(self, code: str) -> float:
-        self._ensure_loaded()
-        # CodeBERT max length is 512.
-        out = self._pipe(code[:512])[0]  # type: ignore[index]
-        label = out["label"].lower()
-        score = float(out["score"])
-        if "label_1" in label or "unsafe" in label or "insecure" in label:
-            return score
-        return 1.0 - score
+        return self._target.score(code)
 
 
 def cmd_scan(args: argparse.Namespace) -> int:
@@ -149,7 +159,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     scan = sub.add_parser("scan")
     scan.add_argument("--file", "-f", required=True)
-    scan.add_argument("--model", default="EleutherAI/pythia-160m")
+    scan.add_argument("--model", default="Qwen/Qwen2.5-Coder-1.5B-Instruct")
     scan.add_argument("--device", default="cpu", choices=["cpu", "cuda", "mps"])
     scan.add_argument("--top-k", type=int, default=10)
     scan.add_argument("--max-layers", type=int, default=None)
@@ -158,7 +168,8 @@ def build_parser() -> argparse.ArgumentParser:
 
     atk = sub.add_parser("attack")
     atk.add_argument("--file", "-f", required=True)
-    atk.add_argument("--target", default="mrm8488/codebert-base-finetuned-detect-insecure-code")
+    atk.add_argument("--target", default="ollama:qwen3:8b",
+                     help="Target spec: 'ollama:<model>', 'hf:<model_id>', or 'heuristic'")
     atk.add_argument("--max-steps", type=int, default=15)
     atk.add_argument("--epsilon", type=float, default=0.3)
     atk.add_argument("--seed", type=int, default=0)
@@ -168,7 +179,8 @@ def build_parser() -> argparse.ArgumentParser:
 
     b = sub.add_parser("benchmark")
     b.add_argument("--dataset", default="data/cwe_samples")
-    b.add_argument("--target", default="mrm8488/codebert-base-finetuned-detect-insecure-code")
+    b.add_argument("--target", default="ollama:qwen3:8b",
+                   help="Target spec: 'ollama:<model>', 'hf:<model_id>', or 'heuristic'")
     b.add_argument("--max-steps", type=int, default=15)
     b.add_argument("--epsilon", type=float, default=0.3)
     b.add_argument("--seed", type=int, default=0)
