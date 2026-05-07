@@ -99,11 +99,19 @@ def _persist(summary: BenchmarkSummary, results: list[AttackResult], output: str
 
 
 def render_markdown(summary: BenchmarkSummary, results: list[AttackResult]) -> str:
+    vuln_pct = (
+        f"{summary.evasion_rate_vuln * 100:.1f}%"
+        if summary.n_correctly_flagged else "n/a"
+    )
     rows = [
         "## Benchmark Results",
         "",
-        f"- Samples: **{summary.n_samples}**",
-        f"- Evasion rate: **{summary.evasion_rate * 100:.1f}%**",
+        f"- Samples: **{summary.n_samples}** "
+        f"(vulnerable: {summary.n_vulnerable}, "
+        f"correctly flagged at start: {summary.n_correctly_flagged})",
+        f"- **Evasion rate (correctly-flagged vuln subset): {vuln_pct}**",
+        f"- Naive rate (all samples below threshold): "
+        f"{summary.evasion_rate * 100:.1f}%",
         f"- Mean confidence drop: **{summary.mean_confidence_drop:+.3f}**",
         f"- Mean steps to evade: **{summary.mean_steps_to_evade:.1f}**",
         f"- Parse validity: **{summary.parse_validity_rate * 100:.1f}%**",
