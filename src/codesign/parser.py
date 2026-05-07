@@ -116,9 +116,15 @@ class ProgramGraphExtractor:
 
     def get_variables(self, tree, source: bytes) -> dict[str, list[NodeWrapper]]:
         # Same query for both languages; filtering happens in _is_renameable.
-        query = self.ts_lang.query("(identifier) @var")
+        query = tree_sitter.Query(self.ts_lang, "(identifier) @var")
+        cursor = tree_sitter.QueryCursor(query)
         out: dict[str, list[NodeWrapper]] = {}
-        for node, _ in query.captures(tree.root_node):
+        seen: set[tuple[int, int]] = set()
+        for node in cursor.captures(tree.root_node).get("var", []):
+            key = (node.start_byte, node.end_byte)
+            if key in seen:
+                continue
+            seen.add(key)
             if not self._is_renameable(node):
                 continue
             w = NodeWrapper.from_ts(node, source)
@@ -151,27 +157,32 @@ class ProgramGraphExtractor:
         tree = self.parse(source_code)
 
         if self.language == "python":
-            q = "(assignment left: (_) @target right: (_) @value)"
+            q_text = "(assignment left: (_) @target right: (_) @value)"
         else:
-            q = "(assignment_expression left: (_) @target right: (_) @value)"
-        query = self.ts_lang.query(q)
-        captures = query.captures(tree.root_node)
+            q_text = "(assignment_expression left: (_) @target right: (_) @value)"
+        query = tree_sitter.Query(self.ts_lang, q_text)
+        cursor = tree_sitter.QueryCursor(query)
+
+        # matches() pairs target+value within the same match, which is what
+        # we actually want; captures() loses that grouping.
+        sub_query = tree_sitter.Query(self.ts_lang, "(identifier) @id")
 
         dfg: dict[str, set[str]] = {}
-        # tree-sitter captures pair up in document order, two per match.
-        for i in range(0, len(captures) - 1, 2):
-            t_node, t_tag = captures[i]
-            v_node, v_tag = captures[i + 1]
-            if not (t_tag == "target" and v_tag == "value"):
+        for _pattern_idx, caps in cursor.matches(tree.root_node):
+            t_nodes = caps.get("target", [])
+            v_nodes = caps.get("value", [])
+            if not t_nodes or not v_nodes:
                 continue
+            t_node = t_nodes[0]
+            v_node = v_nodes[0]
             target = source_bytes[t_node.start_byte:t_node.end_byte].decode("utf-8")
             sinks = dfg.setdefault(target, set())
 
-            sub = self.ts_lang.query("(identifier) @id")
-            for sub_node, _ in sub.captures(v_node):
+            sub_cursor = tree_sitter.QueryCursor(sub_query)
+            for sub_node in sub_cursor.captures(v_node).get("id", []):
                 # skip callee names on the RHS
-                if sub_node.parent and sub_node.parent.type == "call" \
-                        and sub_node.parent.child_by_field_name("function") == sub_node:
+                if (sub_node.parent and sub_node.parent.type == "call"
+                        and sub_node.parent.child_by_field_name("function") == sub_node):
                     continue
                 sinks.add(source_bytes[sub_node.start_byte:sub_node.end_byte].decode("utf-8"))
         return dfg
