@@ -61,8 +61,51 @@ def plot_head_heatmap(report: CircuitReport, out_path: str | Path) -> Path:
     im = ax.imshow(grid, aspect="auto", cmap="magma")
     ax.set_xlabel("Head")
     ax.set_ylabel("Layer")
-    ax.set_title(f"|logit_diff| per head — {report.model_name}")
+    ax.set_title(f"|logit_diff| per head: {report.model_name}")
     fig.colorbar(im, ax=ax, label="|logit_diff|")
+    fig.tight_layout()
+    fig.savefig(out)
+    plt.close(fig)
+    return out
+
+
+def plot_diff_heatmap(
+    clean: CircuitReport,
+    adv: CircuitReport,
+    out_path: str | Path,
+    title: str | None = None,
+) -> Path:
+    """Render a diff heatmap: |logit_diff_clean| - |logit_diff_adv|.
+
+    Red cells: head was important on clean code, less so on adversarial
+    (attack suppressed it). Blue cells: head was more important on the
+    adversarial input than on the clean one (attack activated it).
+    """
+    plt = _mpl()
+    import numpy as np
+
+    out = Path(out_path)
+    out.parent.mkdir(parents=True, exist_ok=True)
+
+    if (clean.n_layers, clean.n_heads) != (adv.n_layers, adv.n_heads):
+        raise ValueError("clean and adv reports must share grid shape")
+
+    L, H = clean.n_layers, clean.n_heads
+    g_clean = np.zeros((L, H))
+    g_adv = np.zeros((L, H))
+    for h in clean.head_logit_diffs:
+        g_clean[h.layer, h.head] = abs(h.logit_diff)
+    for h in adv.head_logit_diffs:
+        g_adv[h.layer, h.head] = abs(h.logit_diff)
+    diff = g_clean - g_adv
+
+    vmax = float(max(abs(diff.min()), abs(diff.max()), 1e-9))
+    fig, ax = plt.subplots(figsize=(7, 4.5), dpi=140)
+    im = ax.imshow(diff, aspect="auto", cmap="RdBu_r", vmin=-vmax, vmax=vmax)
+    ax.set_xlabel("Head")
+    ax.set_ylabel("Layer")
+    ax.set_title(title or f"clean - adv |logit_diff|, model={clean.model_name}")
+    fig.colorbar(im, ax=ax, label="Δ|logit_diff|  (red=suppressed, blue=activated)")
     fig.tight_layout()
     fig.savefig(out)
     plt.close(fig)

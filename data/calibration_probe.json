@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.0",
+  "description": "Hand-curated probe set for testing whether a candidate SVD classifier produces calibrated signal on Python code. Each item is a short, self-contained snippet whose label is unambiguous.",
+  "vulnerable": [
+    {
+      "id": "vuln_os_command_injection",
+      "cwe": "CWE-78",
+      "code": "import os\ndef run(host):\n    os.system('ping ' + host)\n"
+    },
+    {
+      "id": "vuln_eval_injection",
+      "cwe": "CWE-94",
+      "code": "def calc(expr):\n    return eval(expr)\n"
+    },
+    {
+      "id": "vuln_pickle_deserialization",
+      "cwe": "CWE-502",
+      "code": "import pickle\ndef load(blob):\n    return pickle.loads(blob)\n"
+    },
+    {
+      "id": "vuln_sql_injection",
+      "cwe": "CWE-89",
+      "code": "import sqlite3\ndef get_user(name):\n    cur = sqlite3.connect('u.db').cursor()\n    cur.execute(\"SELECT * FROM u WHERE name = '\" + name + \"'\")\n    return cur.fetchall()\n"
+    },
+    {
+      "id": "vuln_path_traversal",
+      "cwe": "CWE-22",
+      "code": "def read(name):\n    with open('/var/data/' + name) as fh:\n        return fh.read()\n"
+    },
+    {
+      "id": "vuln_yaml_load",
+      "cwe": "CWE-502",
+      "code": "import yaml\ndef parse(s):\n    return yaml.load(s, Loader=yaml.Loader)\n"
+    },
+    {
+      "id": "vuln_subprocess_shell",
+      "cwe": "CWE-78",
+      "code": "import subprocess\ndef run(cmd):\n    subprocess.call(cmd, shell=True)\n"
+    },
+    {
+      "id": "vuln_hardcoded_secret",
+      "cwe": "CWE-798",
+      "code": "def auth(u, p):\n    return u == 'admin' and p == 'S3cretP@ss'\n"
+    },
+    {
+      "id": "vuln_md5_password",
+      "cwe": "CWE-327",
+      "code": "import hashlib\ndef hash_pw(pw):\n    return hashlib.md5(pw.encode()).hexdigest()\n"
+    },
+    {
+      "id": "vuln_xxe",
+      "cwe": "CWE-611",
+      "code": "import xml.etree.ElementTree as ET\ndef parse(blob):\n    return ET.fromstring(blob)\n"
+    }
+  ],
+  "safe": [
+    {
+      "id": "safe_simple_arithmetic",
+      "code": "def add(a, b):\n    return a + b\n"
+    },
+    {
+      "id": "safe_class_with_init",
+      "code": "class Point:\n    def __init__(self, x, y):\n        self.x = x\n        self.y = y\n"
+    },
+    {
+      "id": "safe_parameterized_sql",
+      "code": "import sqlite3\ndef get_user(name):\n    cur = sqlite3.connect('u.db').cursor()\n    cur.execute('SELECT * FROM u WHERE name = ?', (name,))\n    return cur.fetchall()\n"
+    },
+    {
+      "id": "safe_subprocess_no_shell",
+      "code": "import subprocess\ndef run(cmd_list):\n    subprocess.call(cmd_list, shell=False)\n"
+    },
+    {
+      "id": "safe_path_canonicalised",
+      "code": "import os\ndef read(name):\n    base = '/var/data'\n    p = os.path.realpath(os.path.join(base, name))\n    if not p.startswith(base):\n        raise ValueError('escape')\n    with open(p) as fh:\n        return fh.read()\n"
+    },
+    {
+      "id": "safe_bcrypt_password",
+      "code": "import bcrypt\ndef hash_pw(pw):\n    return bcrypt.hashpw(pw.encode(), bcrypt.gensalt())\n"
+    },
+    {
+      "id": "safe_yaml_safe_load",
+      "code": "import yaml\ndef parse(s):\n    return yaml.safe_load(s)\n"
+    },
+    {
+      "id": "safe_env_secret",
+      "code": "import os\ndef auth(u, p):\n    return u == os.environ['ADMIN_USER'] and p == os.environ['ADMIN_PASS']\n"
+    },
+    {
+      "id": "safe_xml_defused",
+      "code": "from defusedxml import ElementTree as ET\ndef parse(blob):\n    return ET.fromstring(blob)\n"
+    },
+    {
+      "id": "safe_recursive_fib",
+      "code": "def fib(n):\n    return n if n < 2 else fib(n - 1) + fib(n - 2)\n"
+    }
+  ]
+}
