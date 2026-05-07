@@ -14,16 +14,29 @@ Reproduction recipes are in [`experiments/`](experiments/README.md).
 
 Two analyses, one structural ground truth.
 
-- **Attacker** (`codesign attack`). Multi-armed bandit over three
-  semantics-preserving mutators: variable renaming via byte-precise
-  tree-sitter ranges, dead-code insertion, control-flow flattening.
-  Validated against a real HuggingFace classifier
-  (`mrm8488/codebert-base-finetuned-detect-insecure-code`).
-- **Interpreter** (`codesign scan`). Loads a small TransformerLens model
-  (default `EleutherAI/pythia-160m`), runs an exhaustive
-  `(layer, head)` zero-ablation sweep, and ranks heads by
-  `clean - ablated` logit difference. Emits the layer×head heatmap
-  used in the paper.
+- **Attacker** (`codesign attack`). Multi-armed bandit over eight
+  semantics-preserving mutators that cover the natural-developer-
+  practice space the WP3 description calls for:
+    1. variable renaming with `_advNNN` suffixes (byte-precise via tree-sitter)
+    2. natural identifier renaming (context-likely names like `idx`, `command`, `secret`)
+    3. dead-code insertion (no-op assignment after every `def`)
+    4. control-flow flattening (`if True:` wrap)
+    5. equivalent expression substitution (`not (a == b)` <-> `a != b`, `a + 0` <-> `a`, ...)
+    6. docstring insertion (neutral one-line developer phrasing)
+    7. inline comment insertion (neutral developer-style trailing comments)
+    8. type annotations added (`: str` on untyped parameters)
+
+  Default target is an LLM-as-classifier (`ollama:qwen3:8b`); a
+  HuggingFace discriminative classifier can be selected with
+  `--target hf:<model_id>`. Targets are gated by the
+  [calibration probe (exp00)](experiments/exp00_target_calibration.py)
+  before they are used as ground truth.
+- **Interpreter** (`codesign scan`). Loads a code-trained model via
+  TransformerLens (default `Qwen/Qwen2.5-Coder-1.5B-Instruct`),
+  runs a `(layer, head)` zero-ablation sweep with per-head ablation
+  restricted to DFG-anchored token positions when alignment succeeds,
+  and ranks heads by `clean - ablated` logit difference. Emits the
+  layer×head heatmap used in the paper.
 
 Both share a tree-sitter parser that produces an AST, an
 assignment-based DFG, a coarse CFG, and a list of dangerous-call sinks.
@@ -53,21 +66,39 @@ codesign benchmark --output experiments/results/benchmark.json
 
 ```
 codesign/
-├── data/cwe_samples/             12 CWE-labelled Python samples
-├── experiments/                  exp01-03 reproducible scripts
+├── data/
+│   ├── cwe_samples/              12 CWE-labelled Python samples
+│   └── calibration_probe.json    20-item safe/vuln probe for exp00
+├── experiments/                  exp00-04 reproducible scripts
 ├── notebooks/                    robustness_forgetting.ipynb
 ├── paper/codesign.md             long-form write-up
 ├── src/codesign/
 │   ├── parser.py                 tree-sitter AST/DFG/CFG/sinks
-│   ├── attacker.py               MAB + 3 mutators
+│   ├── attacker.py               MAB + 8 mutators
 │   ├── interpreter.py            DFG-guided activation patching
+│   ├── targets.py                target abstraction (Ollama / HF / heuristic)
 │   ├── metrics.py                evasion / preservation / head-importance
 │   ├── benchmark.py              end-to-end harness
-│   ├── visualizer.py             matplotlib helpers
+│   ├── visualizer.py             matplotlib helpers (incl. diff heatmap)
 │   ├── dataset.py                sample loader
 │   └── cli.py                    `codesign scan|attack|benchmark|report`
 └── tests/                        pytest suite
 ```
+
+## Experiments
+
+| ID | Question | Wall-clock |
+|---|---|---|
+| **exp00** | **Does the candidate target classifier label our probe set correctly?** | ~3 min for 3 targets |
+| exp01 | MAB evasion rate against the calibrated target | ~20 min on 12 samples |
+| exp02 | Head-importance heatmap on clean code | ~10–30 min/sample CPU |
+| exp03 | Clean-vs-adversarial diff heatmap | ~30 min/sample CPU |
+| exp04 | Does k-shot ICL harden Ollama-served LLMs against the MAB? | ~15 min for 4 samples × 2 shot configs |
+
+**exp00 is gating** - running attacks without first verifying the target
+isn't noise produces meaningless evasion rates. The current
+calibration scoreboard is in
+[`experiments/results/exp00_calibration.json`](experiments/results/exp00_calibration.json).
 
 ## Threat model
 
@@ -85,11 +116,14 @@ used by ALERT (arXiv:2201.08698) and VRTG.
 | `--seed` | 0 | Pins the MAB RNG. |
 | `--max-steps` | 15 | Attack budget per sample. |
 | `--epsilon` | 0.3 | Exploration rate. |
-| `--target` | `mrm8488/codebert-base-finetuned-detect-insecure-code` | SVD classifier. |
-| `--model` (scan) | `EleutherAI/pythia-160m` | Probe model — small, CPU-friendly. |
+| `--target` | `ollama:qwen3:8b` | SVD classifier spec; also accepts `hf:<model_id>` and `heuristic`. Calibrated via exp00. |
+| `--model` (scan) | `Qwen/Qwen2.5-Coder-1.5B-Instruct` | Probe model - code-trained Qwen, ~3 GB on CPU. |
 
-A full benchmark over the shipped 12-sample corpus runs in ~30s with
-the heuristic fallback and ~5min with CodeBERT loaded.
+The CodeBERT-driven attack benchmark on 12 samples runs in ~5 min on
+CPU. The full TransformerLens head-sweep on Qwen-Coder-1.5B is much
+slower on CPU (~5–10 sec per ablation × 28 layers × 12 heads); use
+`--max-layers 8` to constrain it for laptop runs, or use the smaller
+`Qwen/Qwen2.5-Coder-0.5B-Instruct` variant.
 
 ## Numbers
 
@@ -121,18 +155,50 @@ ruff check src tests experiments
 - DFG-equivalence is a structural check, not behavioural. A mutator
   could in principle preserve the DFG but break runtime semantics.
   Same gap as in ALERT/MHM/VRTG.
-- The default probe (`pythia-160m`) is not code-trained. It's a
-  smoke-test substrate; reproduce on `deepseek-coder-1.3b` for the
-  real WP2 claim.
+- **HuggingFace discriminative SVD classifiers are unreliable on
+  this task.** Our calibration probe (exp00) ruled the most-popular
+  HF classifier (`mrm8488/codebert-base-finetuned-detect-insecure-code`)
+  out at 0.50 accuracy / 0.0 specificity (predicts VULN for *every*
+  input). We use `ollama:qwen3:8b` (0.80 accuracy on the same probe)
+  as the calibrated default. See `experiments/results/exp00_calibration.json`
+  for the full scoreboard and `paper/codesign.md` §6.7 for the
+  rationale.
+- The default probe is a generative code LLM, not a binary SVD
+  classifier. The patching metric is max-logit at the final position
+  rather than a class-logit. For full WP2 fidelity, swap in a
+  fine-tuned SVD classifier of the same architecture; the
+  `FINE_TUNE_TO_BASE` override pattern in `interpreter.py` makes this
+  one line of config.
 - Sample corpus is small. Point `--dataset` at a Devign / BigVul /
   DiverseVul export with the same `.py` + `.json` convention to scale.
 
 ## Ethics
 
-Defensive-research artifact. The mutators evade a classifier; they
-don't author exploits. Disclosure aids defenders (the WP2 hooks help
-locate vulnerable circuits) and the attack space (renaming,
-dead-code, CFG flattening) is well-known in the literature.
+CodeSign is a defensive research artifact. The goal is *measuring*
+the robustness of LLM-based SVD pipelines, not facilitating evasion
+of deployed systems.
+
+The mutators we ship are well-documented attack primitives in the
+academic literature (ALERT, MHM, VRTG, CODEBREAKER). Releasing an
+open implementation does not extend the attack surface; it makes
+evaluation reproducible.
+
+We do not ship techniques that push the artifact toward
+malware-flavored obfuscation (Unicode homoglyphs, string-encoding
+obfuscation, dead-branch exploit scaffolding, tokenizer-evasion).
+Those exist in the literature and may be appropriate in a
+separate red-team-only tool with coordinated-disclosure norms; not
+here.
+
+The calibration probe (exp00) is itself a defensive contribution:
+it tells SVD-pipeline operators when their classifier is at chance
+level on a balanced probe set. Our finding that the most-popular
+public Python SVD classifier scores 0.50 / 0.0 specificity is more
+useful to defenders than to attackers.
+
+If a CodeSign run on a specific production SVD product reveals a
+systematic evasion path: coordinated disclosure to the vendor, not
+public reporting.
 
 ## License
 

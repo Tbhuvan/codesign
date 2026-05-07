@@ -1,3 +1,7 @@
+% --------------------------------------------------------------------------
+% Problem-space attacks on code models
+% --------------------------------------------------------------------------
+
 @inproceedings{yang2022alert,
   title     = {Natural Attack for Pre-trained Models of Code},
   author    = {Yang, Zhou and Shi, Jieke and He, Junda and Lo, David and Xie, Xin},
@@ -6,23 +10,39 @@
   eprint    = {2201.08698},
   archivePrefix = {arXiv},
   primaryClass  = {cs.SE},
-  url       = {https://arxiv.org/abs/2201.08698}
+  url       = {https://arxiv.org/abs/2201.08698},
+  note      = {Token-substitution attack with naturalness constraint; foundational for VRTG-class methods.}
 }
 
 @inproceedings{zhang2020mhm,
   title     = {Generating Adversarial Examples for Holding Robustness of Source Code Processing Models},
   author    = {Zhang, Huangzhao and Li, Zhuo and Li, Ge and Ma, Lei and Liu, Yang and Jin, Zhi},
   booktitle = {Proceedings of the AAAI Conference on Artificial Intelligence},
-  year      = {2020}
+  year      = {2020},
+  note      = {Metropolis-Hastings sampling for identifier-renaming attacks.}
 }
 
 @misc{guo2025vrtg,
   title  = {Variable Renaming-Based Adversarial Test Generation for Code Models: Benchmark and Enhancement},
-  author = {Guo, Yuejun and others},
+  author = {Guo, Yuejun and Bhandari, Sushant and Hartmann, Maxime and Pirhonen, Jussi},
   year   = {2025},
   howpublished = {ORBilu repository},
-  url    = {https://orbilu.uni.lu/handle/10993/64608}
+  url    = {https://orbilu.uni.lu/handle/10993/64608},
+  note   = {Supervisor co-author. GA-based renaming benchmark; defines DFG-equivalence as the semantics-preservation criterion.}
 }
+
+@inproceedings{yan2024codebreaker,
+  title     = {{CODEBREAKER}: An {LLM}-Assisted Easy-to-Trigger Backdoor Attack on Code Completion},
+  author    = {Yan, Shenao and Wang, Shen and Duan, Yue and Hong, Hanbin and Lee, Kiho and Kim, Doowon and Hong, Yuan},
+  booktitle = {33rd {USENIX} Security Symposium},
+  year      = {2024},
+  url       = {https://www.usenix.org/conference/usenixsecurity24/presentation/yan},
+  note      = {Demonstrates LLM-assisted backdoor that evades both static analysis and LLM-based vulnerability detection. Direct precedent for adversarial attack on LLM-based SVD.}
+}
+
+% --------------------------------------------------------------------------
+% Mechanistic interpretability
+% --------------------------------------------------------------------------
 
 @inproceedings{wang2022ioi,
   title     = {Interpretability in the Wild: A Circuit for Indirect Object Identification in {GPT}-2 Small},
@@ -31,7 +51,8 @@
   year      = {2023},
   eprint    = {2211.00593},
   archivePrefix = {arXiv},
-  url       = {https://arxiv.org/abs/2211.00593}
+  url       = {https://arxiv.org/abs/2211.00593},
+  note      = {Canonical activation-patching protocol; introduces position-precise ablation.}
 }
 
 @misc{conmy2023acdc,
@@ -41,33 +62,8 @@
   eprint = {2304.14997},
   archivePrefix = {arXiv},
   primaryClass  = {cs.LG},
-  url    = {https://arxiv.org/abs/2304.14997}
-}
-
-@misc{han2026persistent,
-  title  = {Persistent Backdoor Attacks under Continual Fine-Tuning of {LLM}s},
-  author = {Han, Yufei and others},
-  year   = {2026},
-  eprint = {2512.14741},
-  archivePrefix = {arXiv},
-  primaryClass  = {cs.CR},
-  url    = {https://arxiv.org/abs/2512.14741}
-}
-
-@inproceedings{yamaguchi2014cpg,
-  title     = {Modeling and Discovering Vulnerabilities with Code Property Graphs},
-  author    = {Yamaguchi, Fabian and Golde, Nico and Arp, Daniel and Rieck, Konrad},
-  booktitle = {2014 IEEE Symposium on Security and Privacy},
-  year      = {2014},
-  publisher = {IEEE}
-}
-
-@book{sutton2018rl,
-  title     = {Reinforcement Learning: An Introduction},
-  author    = {Sutton, Richard S. and Barto, Andrew G.},
-  edition   = {2nd},
-  year      = {2018},
-  publisher = {MIT Press}
+  url    = {https://arxiv.org/abs/2304.14997},
+  note   = {Automated circuit discovery via iterative head pruning. CodeSign's exhaustive sweep is a brute-force counterpart.}
 }
 
 @misc{nanda2022transformerlens,
@@ -76,4 +72,99 @@
   year   = {2022},
   howpublished = {GitHub},
   url    = {https://github.com/TransformerLensOrg/TransformerLens}
+}
+
+% --------------------------------------------------------------------------
+% Backdoors and persistence in code models
+% --------------------------------------------------------------------------
+
+@misc{han2026persistent,
+  title  = {Persistent Backdoor Attacks under Continual Fine-Tuning of {LLM}s},
+  author = {Han, Yufei and others},
+  year   = {2026},
+  eprint = {2512.14741},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CR},
+  url    = {https://arxiv.org/abs/2512.14741},
+  note   = {Supervisor work. P-Trojan algorithm aligns poisoned gradients with clean-task gradients; backdoors survive multi-stage SFT.}
+}
+
+@inproceedings{schuster2021poisoning,
+  title     = {You Autocomplete Me: Poisoning Vulnerabilities in Neural Code Completion},
+  author    = {Schuster, Roei and Schuster, Tal and Meri, Yoav and Shmatikov, Vitaly},
+  booktitle = {30th {USENIX} Security Symposium},
+  year      = {2021},
+  note      = {Earlier demonstration that code-completion models can be poisoned to suggest specific vulnerable patterns.}
+}
+
+% --------------------------------------------------------------------------
+% Program analysis foundations
+% --------------------------------------------------------------------------
+
+@inproceedings{yamaguchi2014cpg,
+  title     = {Modeling and Discovering Vulnerabilities with Code Property Graphs},
+  author    = {Yamaguchi, Fabian and Golde, Nico and Arp, Daniel and Rieck, Konrad},
+  booktitle = {2014 IEEE Symposium on Security and Privacy},
+  year      = {2014},
+  publisher = {IEEE},
+  note      = {Joern's basis. CodeSign's tree-sitter DFG is a Python-only minimal subset of the CPG idea.}
+}
+
+% --------------------------------------------------------------------------
+% Reinforcement learning
+% --------------------------------------------------------------------------
+
+@book{sutton2018rl,
+  title     = {Reinforcement Learning: An Introduction},
+  author    = {Sutton, Richard S. and Barto, Andrew G.},
+  edition   = {2nd},
+  year      = {2018},
+  publisher = {MIT Press},
+  note      = {Chapter 2 (Multi-armed Bandits) is the basis for the epsilon-greedy scheduler.}
+}
+
+% --------------------------------------------------------------------------
+% LLM security surveys and tutorials
+% --------------------------------------------------------------------------
+
+@misc{xu2024llm4cs,
+  title         = {Large Language Models for Cyber Security: A Systematic Literature Review},
+  author        = {Xu, HanXiang and Wang, ShenAo and Li, Ningke and Wang, Kailong and Zhao, Yanjie and Chen, Kai and Yu, Ting and Liu, Yang and Wang, HaoYu},
+  year          = {2024},
+  eprint        = {2405.04760},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CR},
+  url           = {https://arxiv.org/abs/2405.04760},
+  note          = {Survey covering both LLM-as-defender and LLM-as-target perspectives in cybersecurity.}
+}
+
+@misc{acl2024llmvulnerabilities,
+  title        = {Vulnerabilities of Large Language Models to Adversarial Attacks (Tutorial)},
+  author       = {Various},
+  howpublished = {ACL 2024 Tutorial},
+  year         = {2024},
+  url          = {https://llm-vulnerability.github.io/},
+  note         = {Comprehensive overview of attack methodologies on modern LLMs; useful methodological reference.}
+}
+
+% --------------------------------------------------------------------------
+% Datasets / benchmarks (for follow-up scaling)
+% --------------------------------------------------------------------------
+
+@inproceedings{zhou2019devign,
+  title     = {Devign: Effective Vulnerability Identification by Learning Comprehensive Program Semantics via Graph Neural Networks},
+  author    = {Zhou, Yaqin and Liu, Shangqing and Siow, Jingkai and Du, Xiaoning and Liu, Yang},
+  booktitle = {Advances in Neural Information Processing Systems},
+  year      = {2019},
+  note      = {The Devign defect-detection dataset (CodeXGLUE benchmark task source).}
+}
+
+@misc{chen2023diversevul,
+  title  = {DiverseVul: A New Vulnerable Source Code Dataset for Deep Learning Based Vulnerability Detection},
+  author = {Chen, Yizheng and Ding, Zhoujie and Alowain, Lamya and Chen, Xinyun and Wagner, David},
+  year   = {2023},
+  eprint = {2304.00409},
+  archivePrefix = {arXiv},
+  url    = {https://arxiv.org/abs/2304.00409},
+  note   = {Larger, cleaner vulnerability detection dataset; intended target for future scaling of CodeSign benchmarks.}
 }

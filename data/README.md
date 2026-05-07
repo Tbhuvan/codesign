@@ -18,7 +18,7 @@ Hand-curated Python vulnerability samples. Each `.py` has a sibling
 | `cwe_330_insecure_random.py` | CWE-330 | Insecure random | y |
 | `safe_parameterized_query.py` | NONE | Negative control | n |
 
-The set is deliberately small — 12 samples cover enough CWE variance
+The set is intentionally small: 12 samples cover enough CWE variance
 to discriminate signal from noise on a CPU laptop in under a minute.
 For full-scale evaluation, point `--dataset` at a Devign / BigVul /
 DiverseVul export following the same `.py` + `.json` convention.

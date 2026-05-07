@@ -1,1 +1,54 @@
-[]
+[
+  {
+    "experiment": "exp01_attack_evaluation",
+    "started_at": "2026-05-07T12:43:43Z",
+    "target_model": "ollama:qwen3:8b",
+    "dataset": "data/cwe_samples",
+    "max_steps": 12,
+    "epsilon": 0.3,
+    "seed": 0,
+    "n_samples": 12,
+    "evasion_rate": 0.5833333333333334,
+    "mean_confidence_drop": 0.45,
+    "mutation_diversity": {
+      "variable_renaming": 87,
+      "dead_code_insertion": 40,
+      "control_flow_flattening": 17
+    },
+    "result_path": "experiments/results/exp01_attack.json"
+  },
+  {
+    "experiment": "exp01_multiseed",
+    "started_at": "2026-05-07T14:15:02Z",
+    "target_model": "ollama:qwen3:8b",
+    "dataset": "data/cwe_samples",
+    "max_steps": 10,
+    "epsilon": 0.3,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "evasion_rate_vuln_mean": 0.42424242424242425,
+    "evasion_rate_vuln_std": 0.11338355717496791,
+    "result_path": "experiments\\results\\exp01_multiseed\\aggregate.json"
+  },
+  {
+    "experiment": "exp01_multiseed",
+    "started_at": "2026-05-07T16:45:21Z",
+    "target_model": "ollama:qwen3:8b",
+    "dataset": "data/cwe_samples",
+    "max_steps": 25,
+    "epsilon": 0.3,
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "evasion_rate_vuln_mean": 0.5636363636363636,
+    "evasion_rate_vuln_std": 0.06803013430498075,
+    "result_path": "experiments\\results\\exp01_multiseed\\aggregate.json"
+  }
+]
