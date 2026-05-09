@@ -221,16 +221,13 @@ class EquivalentExpressionSubstitution:
 
         candidates: list[tuple[ast.AST, ast.AST]] = []
         for parent in ast.walk(tree):
-            for field_name, field_val in ast.iter_fields(parent):
+            for _field_name, field_val in ast.iter_fields(parent):
                 if isinstance(field_val, list):
-                    for i, child in enumerate(field_val):
-                        rewritten = self._rewrite(child)
-                        if rewritten is not None:
+                    for child in field_val:
+                        if self._rewrite(child) is not None:
                             candidates.append((parent, child))
-                else:
-                    rewritten = self._rewrite(field_val)
-                    if rewritten is not None:
-                        candidates.append((parent, field_val))
+                elif self._rewrite(field_val) is not None:
+                    candidates.append((parent, field_val))
 
         if not candidates:
             return code

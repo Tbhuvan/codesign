@@ -66,10 +66,7 @@ def dfg_preserved(
 
     if set(original_dfg.keys()) != set(mutated_dfg.keys()):
         return False
-    for k in original_dfg:
-        if original_dfg[k] != mutated_dfg.get(k, set()):
-            return False
-    return True
+    return all(original_dfg[k] == mutated_dfg.get(k, set()) for k in original_dfg)
 
 
 def confidence_drop(original: float, final: float) -> float:

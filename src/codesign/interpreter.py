@@ -242,7 +242,7 @@ class VulnerabilityCircuitProbe:
         assert self.model is not None
         hook_name = tl_utils.get_act_name("z", layer)
 
-        def hook(value, hook):  # noqa: ARG001
+        def hook(value, hook):
             if head is None:
                 return torch.zeros_like(value)
             if sink_positions:

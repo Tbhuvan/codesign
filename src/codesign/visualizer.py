@@ -90,9 +90,9 @@ def plot_diff_heatmap(
     if (clean.n_layers, clean.n_heads) != (adv.n_layers, adv.n_heads):
         raise ValueError("clean and adv reports must share grid shape")
 
-    L, H = clean.n_layers, clean.n_heads
-    g_clean = np.zeros((L, H))
-    g_adv = np.zeros((L, H))
+    n_layers, n_heads = clean.n_layers, clean.n_heads
+    g_clean = np.zeros((n_layers, n_heads))
+    g_adv = np.zeros((n_layers, n_heads))
     for h in clean.head_logit_diffs:
         g_clean[h.layer, h.head] = abs(h.logit_diff)
     for h in adv.head_logit_diffs:

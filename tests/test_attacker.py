@@ -4,6 +4,7 @@ import random
 import pytest
 
 from codesign.attacker import (
+    _NATURAL_POOLS,
     AttackTrace,
     ControlFlowFlattening,
     DeadCodeInsertion,
@@ -14,7 +15,6 @@ from codesign.attacker import (
     RLAdversary,
     TypeAnnotationsAdded,
     VariableRenaming,
-    _NATURAL_POOLS,
     _infer_role,
 )
 from codesign.parser import ProgramGraphExtractor
@@ -86,7 +86,7 @@ class TestRLAdversary:
     def test_attack_returns_trace(self, extractor, vuln_os_system, mock_svd):
         g = extractor.build(vuln_os_system)
         adv = RLAdversary(target_model_score_fn=mock_svd, seed=0)
-        out, trace = adv.attack(vuln_os_system, g.all_variable_nodes, max_steps=5)
+        _out, trace = adv.attack(vuln_os_system, g.all_variable_nodes, max_steps=5)
         assert isinstance(trace, AttackTrace)
         assert len(trace.steps) == 5
         assert trace.best_score <= mock_svd(vuln_os_system)

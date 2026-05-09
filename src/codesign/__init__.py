@@ -34,7 +34,6 @@ from codesign.targets import (
 __version__ = "0.3.0"
 
 __all__ = [
-    "__version__",
     "AttackResult",
     "AttackTrace",
     "BenchmarkSummary",
@@ -42,8 +41,8 @@ __all__ = [
     "DeadCodeInsertion",
     "DocstringInsertion",
     "EquivalentExpressionSubstitution",
-    "HeuristicClassifier",
     "HFPipelineClassifier",
+    "HeuristicClassifier",
     "InlineCommentInsertion",
     "MutationStep",
     "NaturalIdentifierRenaming",
@@ -55,6 +54,7 @@ __all__ = [
     "Sample",
     "TypeAnnotationsAdded",
     "VariableRenaming",
+    "__version__",
     "confidence_drop",
     "dfg_preserved",
     "evaded",

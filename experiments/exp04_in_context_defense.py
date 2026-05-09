@@ -21,9 +21,8 @@ import argparse
 import json
 import logging
 import time
-from dataclasses import asdict
-from pathlib import Path
 from collections.abc import Callable
+from pathlib import Path
 
 from codesign.attacker import RLAdversary
 from codesign.dataset import load_samples
@@ -87,7 +86,7 @@ def run_one(
     t0 = time.time()
     base_score = score_fn(sample.code)
     adv = RLAdversary(score_fn, epsilon=epsilon, seed=seed)
-    adv_code, trace = adv.attack(sample.code, graph.all_variable_nodes, max_steps=max_steps)
+    _, trace = adv.attack(sample.code, graph.all_variable_nodes, max_steps=max_steps)
     elapsed = time.time() - t0
 
     evaded_step: int | None = None

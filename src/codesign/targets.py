@@ -231,9 +231,9 @@ def make_target(spec: str) -> TargetClassifier:
 
 
 __all__ = [
-    "TargetClassifier",
-    "OllamaPromptClassifier",
     "HFPipelineClassifier",
     "HeuristicClassifier",
+    "OllamaPromptClassifier",
+    "TargetClassifier",
     "make_target",
 ]
