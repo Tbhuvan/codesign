@@ -3,7 +3,6 @@
 Adversarial attacks and mechanistic interpretability for code-LLM
 vulnerability detectors.
 
-[![CI](https://github.com/Tbhuvan/codesign/actions/workflows/ci.yml/badge.svg)](https://github.com/Tbhuvan/codesign/actions/workflows/ci.yml)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://python.org)
 [![License: Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-green.svg)](LICENSE)
 
