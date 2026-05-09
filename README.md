@@ -6,7 +6,6 @@ vulnerability detectors.
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://python.org)
 [![License: Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-green.svg)](LICENSE)
 
-The long-form write-up is in [`paper/codesign.md`](paper/codesign.md).
 Reproduction recipes are in [`experiments/`](experiments/README.md).
 
 ## What it does
@@ -35,7 +34,7 @@ Two analyses, one structural ground truth.
   runs a `(layer, head)` zero-ablation sweep with per-head ablation
   restricted to DFG-anchored token positions when alignment succeeds,
   and ranks heads by `clean - ablated` logit difference. Emits the
-  layer×head heatmap used in the paper.
+  layer×head heatmap.
 
 Both share a tree-sitter parser that produces an AST, an
 assignment-based DFG, a coarse CFG, and a list of dangerous-call sinks.
@@ -70,7 +69,6 @@ codesign/
 │   └── calibration_probe.json    20-item safe/vuln probe for exp00
 ├── experiments/                  exp00-04 reproducible scripts
 ├── notebooks/                    robustness_forgetting.ipynb
-├── paper/codesign.md             long-form write-up
 ├── src/codesign/
 │   ├── parser.py                 tree-sitter AST/DFG/CFG/sinks
 │   ├── attacker.py               MAB + 8 mutators
@@ -154,14 +152,22 @@ ruff check src tests experiments
 - DFG-equivalence is a structural check, not behavioural. A mutator
   could in principle preserve the DFG but break runtime semantics.
   Same gap as in ALERT/MHM/VRTG.
-- **HuggingFace discriminative SVD classifiers are unreliable on
-  this task.** Our calibration probe (exp00) ruled the most-popular
-  HF classifier (`mrm8488/codebert-base-finetuned-detect-insecure-code`)
-  out at 0.50 accuracy / 0.0 specificity (predicts VULN for *every*
-  input). We use `ollama:qwen3:8b` (0.80 accuracy on the same probe)
-  as the calibrated default. See `experiments/results/exp00_calibration.json`
-  for the full scoreboard and `paper/codesign.md` §6.7 for the
-  rationale.
+- **The most popular public HuggingFace "insecure code" classifier
+  is out-of-distribution on Python.** Our calibration probe (exp00)
+  scored `mrm8488/codebert-base-finetuned-detect-insecure-code` at
+  0.50 accuracy / 0.0 specificity on a 20-item balanced Python
+  probe. Spot-checks confirm it scores C/C++ defects sensibly
+  (`*null = 5;` -> 0.995 vuln) but mislabels `def add(a, b):
+  return a + b` at 0.69 vuln and `eval(input())` at 0.35 vuln. The
+  classifier isn't broken; it's a C/C++-trained model being asked
+  to label Python. The probe doesn't claim "broken classifier";
+  it claims "this isn't a usable SVD target for this corpus
+  without language-matched fine-tuning". We default to
+  `ollama:qwen3:8b` (0.80 accuracy on the same probe) and leave
+  the HF target accessible via `--target hf:<id>` for users with
+  a calibrated discriminative classifier. See
+  `experiments/results/exp00_calibration.json` for the full
+  scoreboard.
 - The default probe is a generative code LLM, not a binary SVD
   classifier. The patching metric is max-logit at the final position
   rather than a class-logit. For full WP2 fidelity, swap in a

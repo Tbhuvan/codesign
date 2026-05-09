@@ -42,6 +42,9 @@ experiments/results/*.log
 figures/cache/
 data/cache/
 
+# Long-form writeup kept locally only
+paper/
+
 # Model weights / huggingface cache
 *.safetensors
 *.bin
