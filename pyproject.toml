@@ -9,7 +9,7 @@ description = "Neuro-symbolic mechanistic interpretability and problem-space adv
 readme = "README.md"
 requires-python = ">=3.10"
 license = { file = "LICENSE" }
-authors = [{ name = "Bhuvan Chandra Thuluva", email = "bhuvan@example.com" }]
+authors = [{ name = "Bhuvan Chandra Thuluva", email = "bthuluva@gmail.com" }]
 keywords = [
     "adversarial-machine-learning",
     "mechanistic-interpretability",
